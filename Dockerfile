@@ -11,7 +11,7 @@ RUN apt-get update \
  && rm -rf /tmp/* \
  && rm -rf /var/lib/apt/lists/*
 
-ENV KAFKA_VERSION="0.10.0.1" SCALA_VERSION="2.11"
+ENV KAFKA_VERSION="2.0.0" SCALA_VERSION="2.11"
 ADD download-kafka.sh /tmp/download-kafka.sh
 RUN /tmp/download-kafka.sh && tar xfz /tmp/kafka_${SCALA_VERSION}-${KAFKA_VERSION}.tgz -C /opt && rm /tmp/kafka_${SCALA_VERSION}-${KAFKA_VERSION}.tgz
 
