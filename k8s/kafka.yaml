@@ -1,0 +1,40 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: kafka
+spec:
+  selector:
+    app: kafka
+  type: NodePort
+  ports:
+  - protocol: TCP
+    port: 9092
+    targetPort: 9092
+    nodePort: 30902
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka
+spec:
+  selector:
+    matchLabels:
+      app: kafka
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: kafka
+    spec:
+      containers:
+      - name: kafka
+        image: knabben/arm-kafka
+        env:
+        - name: KAFKA_ADVERTISED_LISTENERS
+          value: "PLAINTEXT://192.168.0.41:30902"
+        - name: KAFKA_ADVERTISED_HOST_NAME
+          value: "192.168.0.41"
+        - name: KAFKA_ZOOKEEPER_CONNECT
+          value: "zookeeper:2181"
+        ports:
+        - containerPort: 9092
